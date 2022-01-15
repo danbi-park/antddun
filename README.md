@@ -59,7 +59,14 @@
 
 | 리스트 페이징 | 카테고리 | 검색 기능 |
 | ------ | ------ | ------ | 
-| <img src="https://user-images.githubusercontent.com/86641773/149569502-ef605d64-4b8d-4842-9344-f2fd2bd8f916.gif" width="350"/> | <img src="https://user-images.githubusercontent.com/86641773/149569517-4f3cb951-6a0b-48c9-9cc8-c46b2534ca36.gif" width="350"/>  | <img src="https://userimages.githubusercontent.com/86641773/149502096-d1d3093e-8333-4fe2-8848-802acabed9f2.gif" width="300"/> | 
+| <img src="https://user-images.githubusercontent.com/86641773/149569502-ef605d64-4b8d-4842-9344-f2fd2bd8f916.gif" width="350"/> | <img src="https://user-images.githubusercontent.com/86641773/149569517-4f3cb951-6a0b-48c9-9cc8-c46b2534ca36.gif" width="350"/>  | <img src="https://user-images.githubusercontent.com/86641773/149619166-56c06abb-843b-4770-81fe-eecc458ecfec.gif" width="300"/> | 
+
+
+| 좋아요 | 채택하기 | 댓글 블라인드 |
+| ------ | ------ | ------ | 
+| <img src="https://user-images.githubusercontent.com/86641773/149619202-b1bef410-00c1-4c8f-8c54-739f5b612432.gif" width="350"/> | <img src="https://user-images.githubusercontent.com/86641773/149619207-ee5992d9-3fe5-49ee-9968-2c5d8da380e0.gif" width="350"/>  | <img src="https://user-images.githubusercontent.com/86641773/149619211-60807b45-ac2d-4c8d-8f18-52755182839a.gif" width="300"/> | 
+
+
 
 <br><br>
 

@@ -44,9 +44,12 @@
 | ------ | ------ | ------ | 
 |<img src="https://user-images.githubusercontent.com/86641773/149483986-005ac42a-30bb-443d-82e6-d18df98fc7d6.gif" width="350"/> | <img src="https://user-images.githubusercontent.com/86641773/149075887-9c678785-91aa-402f-a21d-278714095d6b.gif" width="350"/> | <img src="https://user-images.githubusercontent.com/86641773/149527495-2d94a22c-2679-43ee-b175-9ac45bf63c7e.gif" width="350"/> |
 
-| 뚠 충전하기 |
-| ------ | 
-| |
+- **뚠 충전**
+
+| 뚠 충전하기 | 결제 요청 카톡 |
+| ------ | ------ | 
+| <img src="https://user-images.githubusercontent.com/86641773/149622516-04ddb61a-b905-4416-be3b-d6448f7d1f23.gif" width="500"/> | <img src="https://user-images.githubusercontent.com/86641773/149622461-72dc638c-f448-48e3-8622-2c2128b6895f.png" width="500"/> |
+
 
 - **소셜 로그인**
 
@@ -65,7 +68,7 @@
 | 좋아요 | 채택하기 | 댓글 블라인드 |
 | ------ | ------ | ------ | 
 | <img src="https://user-images.githubusercontent.com/86641773/149619202-b1bef410-00c1-4c8f-8c54-739f5b612432.gif" width="350"/> | <img src="https://user-images.githubusercontent.com/86641773/149619207-ee5992d9-3fe5-49ee-9968-2c5d8da380e0.gif" width="350"/>  | <img src="https://user-images.githubusercontent.com/86641773/149619211-60807b45-ac2d-4c8d-8f18-52755182839a.gif" width="300"/> | 
-
+| - UI는 토글 방식으로 구현 <br> - 좋아요을 누를때 마다 Ajax로 게시물 번호를 보내 처리 후 좋아요의 총 개수를 가져와 표시한다. <br> - Model로 좋아요 체크 유무를 받아오고 Thymeleaf의 th:if를 이용해 좋아요 표시  | - Ajax로 버튼 이벤트 시 POST방식으로 멤버 번호, 게시글 번호의 정보와 선택한 댓글의 댓글번호를 전달해 처리한다. | - Thymeleaf의 th:if문을 이용해 제 3자는 채택된 댓글을 볼 수 없다. |
 
 
 <br><br>

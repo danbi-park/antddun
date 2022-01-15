@@ -3,102 +3,132 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
     <th:block th:fragment="content">
         <!--페이지 수정 부분 시작-->
+        <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}"/>
         <!-- 페이지 css/ js 추가 -->
         <link rel="stylesheet" th:href="@{/css/board/jayu/register.css}">
         <link rel="stylesheet" th:href="@{/css/board/qna/read.css}">
 
         <script th:src="@{/js/board/jayu/read.js}"></script>
+        <script th:src="@{/js/board/jayu/likes.js}"></script>
         <!-- 본문 시작 -->
-        <div class="content">
+            <div class="content">
 
-            <!--글번호-->
-            <input id="jayu_no" type="hidden" th:value="${jayuBoardDTO.jayuNo}">
-            <div class="form-group">
-                <!--카테고리-->
-                <div class="option">
-                    <span class="cate cate_line">[[${jayuBoardDTO.jayuCateName}]]</span>
-                </div>
-
-                <!--펑예-->
-                <div class="option">
-                    <label class="peong">💣펑예</label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <div class="alert_tip">ⓘ
-                        <span class="tooltiptext">익일 자정에 펑! 삭제됩니다.</span>
+                <!--글번호-->
+                <input id="jayu_no" type="hidden" th:value="${jayuBoardDTO.jayuNo}">
+                <div class="form-group">
+                    <!--카테고리-->
+                    <div class="option">
+                        <span class="cate cate_line">[[${jayuBoardDTO.jayuCateName}]]</span>
                     </div>
-                </div>
-                <!-- 제목 -->
-                <div class="title" name="title" th:utext="${jayuBoardDTO.title}"></div>
 
-                <div style="width:100%;">
-                    <!-- 작성자 -->
-                    <div class="writer" name="writer" th:utext="${jayuBoardDTO.writer}"></div>
-                    <!-- 날짜 -->
-                    <div class="dateTime">
+                    <!--펑예-->
+                    <div class="option">
+                        <label class="peong">💣펑예</label>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <div class="alert_tip">ⓘ
+                            <span class="tooltiptext">익일 자정에 펑! 삭제됩니다.</span>
+                        </div>
+                    </div>
+                    <!-- 제목 -->
+                    <div class="title" name="title" th:utext="${jayuBoardDTO.title}"></div>
+
+                    <div style="width:100%;">
+                        <!-- 작성자 -->
+                        <div class="writer" name="writer" th:utext="${jayuBoardDTO.writer}"></div>
+                        <!-- 날짜 -->
+                        <div class="dateTime">
                     <span>등록일:
                         <span name="regDate" th:utext="${#temporals.format(jayuBoardDTO.regDate,'yyyy/MM/dd HH:mm:ss')}"
                               style="margin-right: 15px;"></span>
                     </span>
-                        <span>수정일:
+                            <span>수정일:
                         <span name="modDate"
                               th:utext="${#temporals.format(jayuBoardDTO.modDate,'yyyy/MM/dd HH:mm:ss')}"></span>
                     </span>
+                        </div>
+                    </div>
+
+                    <!-- 본문 -->
+                    <hr>
+                    <div class="boardContent" name="content" th:utext="${jayuBoardDTO.content}"></div>
+                </div>
+
+                <!-- 좋아요, 수정 삭제 -->
+                <div style="width:100%; height:30px">
+                    <div class="like leftSection">
+                        <span th:if="${lieksCheck} == null" th:id="likeBtn"><img th:attr="src = @{/assets/heart_0.png}"
+                                                                                 class="heartImg"></span>
+                        <span th:if="${lieksCheck} != null" th:id="likeBtn"><img th:attr="src = @{/assets/heart_1.png}"
+                                                                                 class="heartImg"></span>
+                        <span id="likesCnt" class="smallText">[[${jayuBoardDTO.likesCnt}]]</span>
+                        <span id="viewCnt" class="smallText">&nbsp조회수&nbsp[[${jayuBoardDTO.viewCnt}]]</span>
+                    </div>
+                    <div class="rightSection smallText pointer end" th:if="${checkUser} == true">
+                        <span class="modifyBtn"> <a class="smallLink" th:href="@{'/member/jayu/modify?jayuNo='+ ${jayuBoardDTO.jayuNo}}">수정 | </a></span>
+                        <span class="removeBtn"> <a class="smallLink" th:href="@{'/member/jayu/remove?jayuNo='+ ${jayuBoardDTO.jayuNo}}">삭제</a> </span>
                     </div>
                 </div>
 
-                <!-- 본문 -->
+                <!-- 댓글 -->
+                <div class="replyCnt">댓글 [[${jayuBoardDTO.replyCnt}]]개</div>
                 <hr>
-                <div class="boardContent" name="content" th:utext="${jayuBoardDTO.content}"></div>
-            </div>
 
-            <!-- 좋아요, 수정 삭제 -->
-            <div style="width:100%; height:30px">
-                <div class="like leftSection">
-                    <span th:id="likeBtn"><img th:attr="src = @{/assets/heart_1.png}" class="heartImg"></span>
-                    <span id="likesCnt" class="smallText">125</span>
-                    <span id="viewCnt" class="smallText">&nbsp조회수&nbsp[[${jayuBoardDTO.viewCnt}]]</span>
-                </div>
-                <div class="rightSection smallText pointer" th:if="${checkUser} == true">
-                    <span class="removeBtn">삭제 | </span>
-                    <span class="modifyBtn">수정</span>
-                </div>
-            </div>
+                <section class="replySection">
+                            <!-- 댓글 작성-->
+                            <form class="mb-4" method="post">
+                                <div style="width: 100%; margin-bottom: 100px !important;">
+                                    <textarea class="form-control reply" rows="3" name="replyText" required
+                                              placeholder="댓글을 작성하여 지식과 경험을 나눠보세요"></textarea>
+                                    <button type="button" class="rightSection btn-reply">등록</button>
+                                </div>
+                            </form>
 
-            <!-- 댓글 -->
-            <section class="mb-5">
-                <div class="card bg-light">
-                    <div class="card-body">
-                        <!-- 댓글 작성-->
-                        <div class="mb-4"><textarea class="form-control reply" rows="3"
-                                                    placeholder="댓글을 작성하여 지식과 경험을 나눠보세요"></textarea>
-                        </div>
-                        <button type="button" class="btn btn-primary btn-reply">입력</button>
-                        <!-- 댓글 목록-->
-                        <div th:each="replyList:${replyList}">
-                            <div class="d-flex mb-4">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" height="30px" width="30px"
-                                                                    th:src="@{'/assets/user_img/'+${replyList.member.experience}+'.png'}"
-                                                                    alt="..."/></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">[[${replyList.member.job.job}]]
-                                            [[${replyList.member.experience}]]년차 [[${replyList.member.lastName}]]개미
-                                        </div>
-                                        [[${replyList.text}]]
-                                    </div>
+                            <!-- 댓글 수 0 -->
+                            <div th:if="${jayuBoardDTO.replyCnt} == 0" class="noneReply">
+                                <img th:src="@{/assets/messenger.png}">
+                                <div class="smallText">
+                                    아직 댓글이 없습니다.<br>
+                                    첫 번째 댓글을 남겨보세요! •' - '•)و ✧
                                 </div>
                             </div>
-                        </div>
+
+                            <!-- 댓글 목록-->
+                            <div th:each="replyList:${replyList}">
+                                <div class="d-flex mb-4">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0"><img class="rounded-circle" height="30px"
+                                                                        width="30px"
+                                                                        th:src="@{'/assets/user_img/'+${replyList.member.experience}+'.png'}"
+                                                                        alt="..."/></div>
+                                        <div class="innerText">
+                                            <div class="ms-3">
+                                                <input type="hidden" class="reply-no" name="jayuRno" th:value="${replyList.jayuRno}">
+                                                <input type="hidden" class="replier" name="member" th:value="${replyList.member.mno}">
+                                                <div class="replier leftSection">[[${replyList.member.job.job}]]
+                                                    [[${replyList.member.experience}]]년차 [[${replyList.member.lastName}]]개미
+                                                </div>
+                                                <div class="rightSection smallText pointer end"
+                                                     th:if="${replyList.member.mno} == ${replier}">
+                                                    <span class="reply-modify">수정 | </span>
+                                                    <span class="reply-delete">삭제</span>
+                                                </div>
+                                                <input class="reply-text-box" name="replyText" th:value="${replyList.replyText}" readonly>
+
+                                            </div>
+                                            <div>
+                                                <span class="date" th:text="${#temporals.format(replyList.regDate,'yyyy.MM.dd HH:mm')}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <button class="btn btn-primary" onclick='javascript:window.history.back()'>목록보기</button>
-
-        </div>
+<!--                <button class="btn btn-primary" onclick='javascript:window.history.back()'>목록보기</button>-->
+            </div>
         <!-- 본문 끝 -->
         <!--페이지 수정 부분 끝-->
     </th:block>

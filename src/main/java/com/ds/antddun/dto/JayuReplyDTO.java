@@ -15,7 +15,7 @@ public class JayuReplyDTO {
 
     private Long jayuRno, jayuNo, mno;
 
-    private String text;
+    private String replyText;
 
     private LocalDateTime regDate, modDate;
 }

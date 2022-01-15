@@ -43,23 +43,15 @@
                 </div>
 
                 <!--뚠-->
-                <div class="form-group">
+                <div class="ddun">
 
-                    <img th:src="@{/assets/coins.png}" width="25rem">
-                    <input type="text" id="ddun" class="form-control ddun" name="ddun"
-                           onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
-                           placeholder="150" th:value="${modify.ddun}"> <label class="ddun"> 뚠</label>
-
-                </div>
-
-                <!--작성자-->
-                <div class="form-group">
-
-                    <input type="text" class="form-control" name="writer" readonly>
+                    <img th:src="@{/assets/coins.png}" width="25rem"> <span class="betDdunTitle">&nbsp뚠 설정&nbsp</span>
+                    <input type="text" id="ddun" class="input_ddun ddun" name="ddun"
+                           onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
                 </div>
 
                 <!--수정 / 삭제 버튼-->
-                <button type="submit" class="btn btn-modify btn-primary">수정</button>
+                <button type="submit" class="btn btn-modify btn-primary" style="margin-left: 3px;">수정</button>
                 <button type="button" class="btn btn-delete btn-primary">삭제</button>
             </form>
         </div>

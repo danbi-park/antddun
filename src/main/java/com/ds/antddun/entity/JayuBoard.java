@@ -31,11 +31,4 @@ public class JayuBoard extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // 영속성 (CasacadeType.ALL 제거 : 영속성을 제거하여 Member 엔티티가 중복으로 저장되는 현상 X)
     private JayuCategory jayuCategory;
 
-    public void changeTitle(String title) {
-        this.title = title;
-    }
-    public void changeContent(String content) {
-        this.content = content;
-    }
-
 }

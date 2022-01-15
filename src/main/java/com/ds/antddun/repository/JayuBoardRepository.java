@@ -11,12 +11,42 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface JayuBoardRepository extends JpaRepository<JayuBoard, Long>,
         QuerydslPredicateExecutor<JayuBoard> {
 
+    //게시글 목록 출력
+    @Query("SELECT jayu, COUNT(distinct likes.jayuLno), COUNT(distinct reply.jayuRno) " +
+            "FROM JayuBoard jayu " +
+            "LEFT OUTER JOIN JayuLikes likes " +
+            "ON likes.jayuBoard.jayuNo = jayu.jayuNo " +
+            "LEFT OUTER JOIN JayuReply reply " +
+            "ON reply.jayuBoard.jayuNo = jayu.jayuNo " +
+            "group by jayu.jayuNo " )
+    Page<Object[]> getList(BooleanBuilder booleanBuilder, Pageable pageable);
+
     //카테고리 목록 출력
-    @Query(value = "select * from jayu_board where jayu_category_jayu_cate_no=:jayuCateNo ", nativeQuery = true)
-    Page<JayuBoard> getListByCate(int jayuCateNo, Pageable pageable);
+    @Query("SELECT jayu, COUNT(distinct likes.jayuLno), COUNT(distinct reply.jayuRno) " +
+            "FROM JayuBoard jayu " +
+            "LEFT OUTER JOIN JayuLikes likes " +
+            "ON likes.jayuBoard.jayuNo = jayu.jayuNo " +
+            "LEFT OUTER JOIN JayuReply reply " +
+            "ON reply.jayuBoard.jayuNo = jayu.jayuNo " +
+            "WHERE jayu_category_jayu_cate_no=:jayuCateNo "+
+            "group by jayu.jayuNo " )
+    Page<Object[]> getListByCate(int jayuCateNo, Pageable pageable);
+
+    //게시글 내용 출력
+    @Query("SELECT jayu, COUNT(distinct likes.jayuLno), COUNT(distinct reply.jayuRno) " +
+            "FROM JayuBoard jayu " +
+            "LEFT OUTER JOIN JayuLikes likes " +
+            "ON likes.jayuBoard.jayuNo = jayu.jayuNo " +
+            "LEFT OUTER JOIN JayuReply reply " +
+            "ON reply.jayuBoard.jayuNo = jayu.jayuNo " +
+            "WHERE jayu.jayuNo=:jayuNo "+
+            "group by jayu.jayuNo " )
+    List<Object[]> getBoard(Long jayuNo);
 
     //조회수
     @Transactional

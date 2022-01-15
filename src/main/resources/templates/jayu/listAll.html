@@ -17,7 +17,7 @@
         <!-- 카테고리 목록 -->
         <div class="subNav-body">
             <nav class="nav nav-underline" aria-label="Secondary navigation">
-                <a class="subNav" th:href="@{/jayu/list/all}">전체</a>
+                <a class="subNav" th:href="@{/jayu/list/all}">전체</a><a class="subNav">💣펑예</a>
                 <a th:each="cateList : ${cateList}" class="subNav"
                         th:onclick="|javascript:getCateList(${cateList.jayuCateNo},'1')|">
                 [[${cateList.jayuCateName}]]
@@ -56,9 +56,11 @@
                     <div class="nickName">[[${jayuList.writer}]]</div>
 
                     <div class="wrapInfo">
-                        <span class="like"><img th:src="@{/assets/heart_0.png}" width="20px;"> 125</span>
+                        <span class="like"><img th:src="@{/assets/heart_0.png}" width="20px;"> [[${jayuList.likesCnt}]]</span>
+<!--                        <span class="like" th:if="${jayuList.member.mno} == ${lieksCheck}"><img th:src="@{/assets/heart_0.png}" width="20px;"> [[${jayuList.likesCnt}]]</span>-->
+<!--                        <span class="like" th:if="${jayuList.member.mno} !== ${lieksCheck}"><img th:src="@{/assets/heart_1.png}" width="20px;"> [[${jayuList.likesCnt}]]</span>-->
                         <span class="views"><img th:src="@{/assets/eye.png}" width="24px;"> [[${jayuList.viewCnt}]]</span>
-                        <span class="cmt"><img th:src="@{/assets/messenger.png}" width="19px;"> 51</span>
+                        <span class="cmt"><img th:src="@{/assets/messenger.png}" width="19px;"> [[${jayuList.replyCnt}]]</span>
                     </div>
                 </div>
 

@@ -63,13 +63,18 @@ public class DdunController {
     /* QnA 뚠 거래 */
     @ResponseBody
     @GetMapping("/qna/betDdun")
-    public ResponseEntity<String> qnaBetDdun(@AuthenticationPrincipal PrincipalDetails principalDetails,
+    public String qnaBetDdun(@AuthenticationPrincipal PrincipalDetails principalDetails,
                                              @RequestParam("title") String title,
                                              @RequestParam("amount") Long amount,
+                                             @RequestParam("totalDdun") Long totalDdun,
                                              DdunDTO ddunDTO) {
-        ddunDTO.setContent(title);
-        ddunService.sosoBuy(principalDetails.getMember(), amount, ddunDTO);
-        return new ResponseEntity<>("구매 성공", HttpStatus.OK);
+        if ( totalDdun < amount ) {
+            return "뚠 부족";
+        } else {
+            ddunDTO.setContent(title);
+            ddunService.sosoBuy(principalDetails.getMember(), amount, ddunDTO);
+            return "등록 성공";
+        }
     }
 
     @ResponseBody

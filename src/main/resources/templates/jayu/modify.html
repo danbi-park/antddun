@@ -1,10 +1,60 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <!--페이지 수정 부분 시작-->
+        <!-- 페이지 css/ js 추가 -->
+        <link rel="stylesheet" th:href="@{/css/board/jayu/register.css}">
+        <!-- summernote css/ js -->
+        <script th:src="@{/js/board/summernote/custom.js}"></script>
+        <script th:src="@{/js/board/summernote/summernote-lite.js}"></script>
+        <link rel="stylesheet" th:href="@{/css/board/summernote/custom.css}">
+        <link rel="stylesheet" th:href="@{/css/board/summernote/summernote-lite.css}">
 
-</body>
-</html>
+        <!-- summernote 한글 적용 -->
+        <script th:src=" @{https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js}"></script>
+
+        <!-- 본문 시작 -->
+        <div class="content">
+            <form th:action="@{/member/jayu/modify}" method="post">
+                <input id="jayuNo" name="jayuNo" type="hidden" th:value="${jayuBoardDTO.jayuNo}">
+
+                <!--카테고리-->
+                <div class="option">
+                    <select class="category" name="jayuCateNo">
+                        <option th:each="cateList : ${cateList}" th:value="${cateList.jayuCateNo}"
+                                th:selected="${jayuBoardDTO.jayuCateNo}==${cateList.jayuCateNo}">[[${cateList.jayuCateName}]]</option>
+                    </select>
+                </div>
+                <!--펑예-->
+                <div class="option">
+                    <label class="peong">💣펑예</label>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <div class="alert_tip">ⓘ
+                        <span class="tooltiptext">익일 자정에 펑! 삭제될 예정입니다.</span>
+                    </div>
+                </div>
+
+                <!--제목-->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="title" required
+                           placeholder="제목을 입력해주세요" th:value="${jayuBoardDTO.title}">
+                </div>
+
+                <!--내용-->
+                <div class="form-group">
+                    <textarea id="summernote" name="content" required
+                              th:utext="${jayuBoardDTO.content}"></textarea>
+                </div>
+
+                <!--작성완료 버튼-->
+                <button type="submit" class="btn btn-primary">수정</button>
+            </form>
+        </div>
+        <!-- 본문 끝 -->
+        <!--페이지 수정 부분 끝-->
+    </th:block>
+</th:block>

@@ -94,7 +94,7 @@ $(document).ready(function() {
 
     // 댓글 수정
     $(".reply-modify").click(function() {
-        var parent = $(this).parent();
+        var parent = $(this).parent().parent();
         var replyNo = parent.children(".reply-no").val();
         var replyText = parent.children(".reply-text-box");
         var replier = parent.children(".replier");
@@ -103,6 +103,10 @@ $(document).ready(function() {
         if(count == 1){
             console.log(count);
             replyText.removeAttr("readonly");
+            replyText.css('border','solid 1px gray');
+            replyText.css('border-radius','5px');
+            replyText.css('cursor','text');
+
             replyText.focus();
         } else if(count == 2) {
 
@@ -131,7 +135,7 @@ $(document).ready(function() {
 
     // 댓글 삭제
         $(".reply-delete").click(function() {
-            var parent = $(this).parent();
+            var parent = $(this).parent().parent();
             var replyNo = parent.children(".reply-no").val();
 
             $.ajax({

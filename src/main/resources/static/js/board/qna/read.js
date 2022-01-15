@@ -23,10 +23,8 @@ $(document).ready(function() {
 
         if(count == 1){
               info_helper.css('display','inline-block');
-              console.log(count);
         } else if(count == 2) {
               info_helper.css('display','none');
-              console.log(count);
               count = 0;
         }
     })
@@ -41,13 +39,13 @@ $(document).ready(function() {
         var title = $('#title').val();
         var input_box = $(".input_ddun");
         var input_ddun = parseInt($("#input_ddun").val());
-        var total_ddun = parseInt($("#total_ddun").text());
+        var totalDdun = parseInt($(".total_ddun").text());
 
-        if(input_ddun > total_ddun){
-            alert("뚠이 부족합니다.");
-            input_box.focus();
-            return false;
 
+        if(input_ddun > totalDdun){
+              Swal.fire("잠시만요!","뚠이 부족해요 😲", "warning");
+              input_box.focus();
+              return false;
         } else if(input_ddun == 0 || isNaN(input_ddun)){
            var confirmNoDdun = confirm("뚠 없이 질문하시겠습니까?");
            if(confirmNoDdun){
@@ -56,13 +54,12 @@ $(document).ready(function() {
            input_box.focus();
            return false;
            }
-        } else if((input_ddun % 10) != 0) {
-            alert("뚠은 10단위로 적어주세요.");
+       } else if((input_ddun % 10) != 0){
+            Swal.fire("","뚠은 10단위로 적어주세요.", "warning");
             input_box.focus();
             return false;
         } else if (input_ddun > 0) {
             if(!confirm(input_ddun + "뚠으로 질문하시겠습니까?")){
-              event.preventDefault();
               input_box.focus();
               return false;
             }
@@ -71,18 +68,22 @@ $(document).ready(function() {
         $.ajax({
            url: "/antddun/member/qna/betDdun",
            type: "GET",
+           async: false,
            data: {
+               "totalDdun": totalDdun,
                "amount": input_ddun,
                "title": title
            },
-           success: function(data) {
-               if(data === "구매 성공") {
-//                   alert("거래가 완료되었습니다.");
+           dataType: "text",
+           success: function(response) {
+               if(response == "뚠 부족") {
+                   Swal.fire("잠시만요!","뚠이 부족해요 😲", "warning");
+                   return false;
                }
            }
         }); // ajax end.
 
-        $("form").submit();
+       $("form").submit();
 
     }); //#btn-register".click end
 

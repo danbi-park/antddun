@@ -5,9 +5,10 @@ import com.ds.antddun.entity.JayuReply;
 import com.ds.antddun.repository.JayuReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +32,27 @@ public class JayuReplyServiceImpl implements JayuReplyService{
         return jayuReply.getJayuRno();
     }
 
+    @Transactional
     @Override
     public void modify(JayuReplyDTO jayuReplyDTO) {
-        JayuReply jayuReply = dtoToEntity(jayuReplyDTO);
-        jayuReplyRepository.save(jayuReply);
+        Optional<JayuReply> result = jayuReplyRepository.findById(jayuReplyDTO.getJayuRno());
+
+        if (result.isPresent()) {
+            JayuReply jayuReply = result.get();
+            jayuReply.setReplyText(jayuReplyDTO.getReplyText());
+            jayuReplyRepository.save(jayuReply);
+        }
     }
 
+    @Transactional
     @Override
-    public void remove(Long jayuRno) {
+    public void replyRemove(Long jayuRno) {
         jayuReplyRepository.deleteById(jayuRno);
+    }
+
+    @Transactional
+    @Override
+    public void remove(Long jayuNo){
+        jayuReplyRepository.remove(jayuNo);
     }
 }

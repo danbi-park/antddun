@@ -38,13 +38,11 @@
                 </div>
 
                 <!--뚠-->
-                <div class="form-group">
+                <div class="ddun">
 
-                    <img th:src="@{/assets/coins.png}" width="25rem">
-                    <input type="text" id="ddun" class="form-control ddun" name="ddun"
-                           onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
-                           placeholder="150" required> <label class="ddun"> 뚠</label>
-
+                    <img th:src="@{/assets/coins.png}" width="25rem"> <span class="betDdunTitle">&nbsp뚠 설정&nbsp</span>
+                    <input type="text" id="ddun" class="input_ddun ddun" name="ddun"
+                           onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
                 </div>
 
                 <!--작성완료 버튼-->

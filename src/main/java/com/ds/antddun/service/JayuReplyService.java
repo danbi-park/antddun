@@ -17,31 +17,19 @@ public interface JayuReplyService {
     void modify(JayuReplyDTO jayuReplyDTO);
 
     //댓글 삭제
-    void remove(Long jayuRno);
+    void replyRemove(Long jayuRno);
+
+    //게시글 삭제
+    void remove(Long jayuNo);
 
     default JayuReply dtoToEntity(JayuReplyDTO jayuReplyDTO) {
 
         JayuReply jayuReply = JayuReply.builder()
                 .jayuRno(jayuReplyDTO.getJayuRno())
-                .text(jayuReplyDTO.getText())
+                .replyText(jayuReplyDTO.getReplyText())
                 .member(Member.builder().mno(jayuReplyDTO.getMno()).build())
                 .jayuBoard(JayuBoard.builder().jayuNo(jayuReplyDTO.getJayuNo()).build())
                 .build();
         return jayuReply;
     }
-
-    default JayuReplyDTO entityToDTO(JayuReply jayuReply){
-
-        JayuReplyDTO jayuReplyDTO = JayuReplyDTO.builder()
-                .jayuRno(jayuReply.getJayuRno())
-                .jayuNo(jayuReply.getJayuBoard().getJayuNo())
-                .mno(jayuReply.getMember().getMno())
-                .text(jayuReply.getText())
-                .regDate(jayuReply.getRegDate())
-                .modDate(jayuReply.getModDate())
-                .build();
-
-        return jayuReplyDTO;
-    }
-
 }

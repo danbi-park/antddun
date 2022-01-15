@@ -123,38 +123,45 @@
                                 <div class="content" th:utext="${read.content}"></div>
                             </section >
                         </div>
-                        <button id="board-delete" th:if="${writer} == ${read.mno}" ><a th:href="@{'/member/sosojob/delete/'+ ${read.sosoNo}}">삭제</a></button>
-                        <button th:if="${writer} == ${read.mno}"><a th:href="@{'/member/sosojob/modify/sosoNo='+ ${read.sosoNo}}">수정</a></button>
+                        <div class="rightSection smallText pointer end" style="margin-bottom: 1rem;">
+                            <span class="modifyBtn" th:if="${writer} == ${read.mno}"><a th:href="@{'/member/sosojob/modify/sosoNo='+ ${read.sosoNo}}">수정 | </a></span>
+                            <span class="removeBtn" id="board-delete" th:if="${writer} == ${read.mno}" ><a th:href="@{'/member/sosojob/delete/'+ ${read.sosoNo}}">삭제</a></span>
+                        </div>
                     </article>
                     <!-- Comments section-->
                     <section class="mb-5">
                         <div class="card bg-light" style="width: 92%; margin: 0 auto;">
-                            <div class="card-body">
+                            <div class="replySection">
                                 <!-- Comment form-->
                                 <form class="mb-4" method="post">
-                                    <textarea class="form-control reply" rows="3" name="replyText"
-                                              placeholder="댓글을 작성하여 지식과 경험을 나눠보세요."></textarea>
+                                        <textarea class="form-control reply" rows="3" name="replyText"
+                                                  placeholder="댓글을 작성하여 지식과 경험을 나눠보세요."></textarea>
+                                    <div>
+                                        <input type="button" class="rightSection btn-reply" id="btn_reply" value="등록">
+                                    </div>
                                 </form>
-                                <div>
-                                    <input type="button" class="btn btn-primary btn-reply" id="btn_reply" value="작성하기">
-                                </div>
                                 <!-- Comment with nested comments-->
                                 <div th:each="replyList : ${replyList}">
-                                    <div class="d-flex mb-4" >
+                                    <div class="d-flex mb-4">
                                         <!-- Parent comment-->
                                         <div class="flex-shrink-0">
                                             <img class="rounded-circle" height="30px" width="30px"
                                                  th:src="@{'/assets/user_img/'+${replyList.member.experience}+'.png'}"
                                                  alt="..."/>
                                         </div>
-                                        <div class="innerTest">
+                                        <div class="innerText">
                                             <div class="ms-3" >
                                                 <input type="hidden" class="reply-no" name="sosoReplyNo" th:value="${replyList.sosoReplyNo}">
                                                 <input type="hidden" class="replier" name="member" th:value="${replyList.member.mno}">
-                                                <div class="fw-bold" >[[${replyList.member.job.job}]] [[${replyList.member.experience}]]년차 [[${replyList.member.lastName}]]개미</div>
+                                                <div class="replier leftSection" >[[${replyList.member.job.job}]] [[${replyList.member.experience}]]년차 [[${replyList.member.lastName}]]개미</div>
+                                                <div class="rightSection smallText pointer end">
+                                                    <span class="reply-modify" th:if="${writer} == ${replyList.member.mno}" >수정 | </span>
+                                                    <span class="reply-delete" th:if="${writer} == ${replyList.member.mno}" >삭제</span>
+                                                </div>
                                                 <input class="reply-text-box" name="replyText" th:value="${replyList.replyText}" readonly>
-                                                <button class="reply-modify" th:if="${writer} == ${replyList.member.mno}" >수정</button>
-                                                <button class="reply-delete" th:if="${writer} == ${replyList.member.mno}" >삭제</button>
+                                                <div>
+                                                    <span class="date" th:text="${#temporals.format(replyList.regDate,'yyyy.MM.dd HH:mm')}"></span>
+                                                </div>
 
                                                 <!-- Child comment 1-->
                                                 <!--                                        <div class="d-flex mt-4">-->

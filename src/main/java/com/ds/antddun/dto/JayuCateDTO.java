@@ -7,7 +7,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class JayuCateDTO {
     private int jayuCateNo;
     private String jayuCateName;

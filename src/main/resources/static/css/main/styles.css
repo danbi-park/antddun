@@ -4472,7 +4472,6 @@ textarea.form-control-lg {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
 }
 .card > hr {
@@ -6694,6 +6693,7 @@ textarea.form-control-lg {
 
 .d-flex {
   display: flex !important;
+  width: 100%;
 }
 
 .d-inline-flex {
@@ -7353,6 +7353,7 @@ textarea.form-control-lg {
 
 .ms-3 {
   margin-left: 1rem !important;
+  width: 100%;
 }
 
 .ms-4 {

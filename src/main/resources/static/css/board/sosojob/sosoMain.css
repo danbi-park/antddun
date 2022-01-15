@@ -311,19 +311,67 @@ article {
 
 
 .btn-reply{
-     margin-left: 88%;
-     width: 75px;
-     padding: 2px;
+    margin-left: 88%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    width: 75px;
+    background: #b0b3be;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    border: #b0b3be 1px solid;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: 'ELAND_Choice_M';
 }
 
 
 .smallText{
     color: gray;
     font-size: 13px;
-    text-align: end;
     font-weight: bold;
+    font-family: 'ELAND_Choice_M';
 }
 
 .pointer{
     cursor:pointer;
 }
+
+.end{
+    text-align: end;
+}
+.replySection{
+    width: 100%;
+    margin-bottom: 3rem;
+}
+.reply-text-box{
+    resize:none;
+    line-height:30px;
+    overflow-y:hidden;
+    border: none;
+    margin: 0.5rem 0rem;
+    width: 100%;
+    color:#3e3e3eed;
+    font-weight:bold;
+    font-size: 18px;
+    cursor: default;
+    font-family:  'ELAND_Choice_M';
+}
+.date{
+    float: left;
+    text-align: end;
+    font-size: 13px;
+    color: gray;
+}
+.replier{
+    font-family:'ELAND_Choice_M';
+}
+
+.form-control{
+     font-family: 'ELAND_Choice_M';
+     font-size: 16px;
+}
+.innerText{
+    width:100%;
+}
+

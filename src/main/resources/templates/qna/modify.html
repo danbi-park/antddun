@@ -60,10 +60,11 @@
                         </a>
                     </div>
 
-                    <input type="text" id="input_ddun" class="input_ddun" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+                    <input type="text" id="input_ddun" class="input_ddun" th:placeholder="${boardList.ddun}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
                            name="ddun" required>
-                    <div class="my_ddun" th:if="${totalDdun} != null">보유 뚠 : <span id="total_ddun">[[${totalDdun}]]</span></div>
-                    <div class="my_ddun" th:unless=" ${totalDdun} != null ">보유 뚠 : 0 <a class="charge" th:href="@{/member/mypage/wallet}">충전하러가기</a></div>
+                    <div class="my_ddun" th:if="${totalDdun} != null">보유 뚠 : <span class="total_ddun">[[${totalDdun}]]</span></div>
+                    <div class="my_ddun" th:unless=" ${totalDdun} != null ">보유 뚠 : 0 <span class="total_ddun" hidden>[[${totalDdun}]]</span><a class="charge" th:href="@{/member/mypage/wallet}">충전하러가기</a></div>
+
                 </div>
 
                 <hr>

@@ -1,53 +1,87 @@
 $(document).ready(function() {
-    var jayuNo = $("#jayu_no").val();
+   var count = 0;
 
     // 댓글 등록
     $(".btn-reply").click(function() {
-        var replyData = {
+        var jayuNo = $("#jayu_no").val();
+        var replyText = $(".form-control").val();
+        var data = {
             jayuNo: jayuNo,
-            text: $(".form-control").val()
+            replyText: replyText
+        }
+
+        if(replyText == ""){
+            alert("내용을 입력해주세요.");
+            $('textarea[name="replyText"]').focus();
+            return false;
         }
 
         $.ajax({
-            url: '/antddun/reply/register',
+            url: '/antddun/jayu/reply/register',
             method: 'POST',
             dataType: 'json',
-            data: JSON.stringify(replyData),
+            data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
             success: function() {
-                alert("댓글 등록 성공");
+                console.log(data);
                 self.location.reload();
             }
         }) // ajax end.
     });
 
- //리뷰 리스트 보기
-//function getReply() {
-//    function formatTime(str) {
-//        var date = new Date(str);
-//        return date.getFullYear()+'/'+
-//        (date.getMonth() + 1)+'/' +
-//        date.getDate() + ' ' +
-//        date.getHours()+':'+
-//        date.getMinutes();
-//    }
-//
-//    $.getJSON('antddun/reply/list', function(arr) {
-//    var str = "";
-//
-//        $.each(arr, function(idx, reply) {
-//            str += ' <b class="reviewNum">'+review.reviewNum+'</b>';
-//            str += ' <h5 class="reviewText">'+review.text+'</h5>';
-//            str += ' <p>'+formatTime(review.regDate)+'</p>';
-//            str += ' </div>';
-//        console.log("review>>>>>>>>>>>"+review);
-//        });
-//
-//        $(".rv-list-table").html(str);
-//        //console.log(">>>>>>>>>>>"+str);
-//    });
-//}
-//getReply();
+    //댓글 수정
+    $(".reply-modify").click(function() {
+        var parent = $(this).parent().parent();
+        var replyNo = parent.children(".reply-no").val();
+        var replyText = parent.children(".reply-text-box");
+        var replier = parent.children(".replier");
 
+        count++;
+
+        if(count == 1){
+            replyText.removeAttr("readonly");
+            replyText.css('border','solid 1px gray');
+            replyText.css('border-radius','5px');
+            replyText.css('cursor','text');
+
+            replyText.focus();
+
+        } else if(count == 2) {
+
+            var modify = {
+                jayuRno: replyNo,
+                replyText: replyText.val()
+            }
+
+            $.ajax({
+                url: "/antddun/jayu/reply/modify/" + replyNo,
+                method: "post",
+                data: JSON.stringify(modify),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                    if(result === "modify") {
+                        alert("댓글 수정");
+                        console.log(replyText.val());
+                        self.location.reload();
+                    }
+                }
+            })
+            count = 0;
+        }
+    });
+
+    //댓글 삭제
+    $(".reply-delete").click(function() {
+        var parent = $(this).parent().parent();
+        var replyNo = parent.children(".reply-no").val();
+
+        $.ajax({
+            url: "/antddun/jayu/reply/remove/" + replyNo,
+            method: "delete",
+            success: function(result) {
+                    self.location.reload();
+                }
+        }) // ajax end.
+    });
 
 }); // end.

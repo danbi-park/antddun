@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class JayuBoardDTO {
 
-    private Long jayuNo;
+    private Long jayuNo, mno;
     private String title, content, writer, jayuCateName;
-    private int jayuCateNo, viewCnt;
+    private int jayuCateNo, viewCnt, likesCnt, replyCnt ;
 
     private LocalDateTime regDate, modDate;
 }

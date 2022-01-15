@@ -3,10 +3,7 @@ package com.ds.antddun.service;
 import com.ds.antddun.dto.JayuBoardDTO;
 import com.ds.antddun.dto.PageRequestDTO;
 import com.ds.antddun.dto.PageResultDTO;
-import com.ds.antddun.entity.JayuBoard;
-import com.ds.antddun.entity.JayuCategory;
-import com.ds.antddun.entity.Member;
-import com.ds.antddun.entity.QJayuBoard;
+import com.ds.antddun.entity.*;
 import com.ds.antddun.repository.JayuBoardRepository;
 import com.ds.antddun.repository.JayuCateRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -18,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -30,37 +29,76 @@ public class JayuBoardServiceImpl implements JayuBoardService{
 
     private final JayuCateRepository jayuCateRepository;
 
+    private final JayuLikesService jayuLikesService;
+
+    private final JayuReplyService jayuReplyService;
+
     @Override
     public Long register(JayuBoardDTO jayuBoardDTO, Member member){
-
         JayuCategory cateName = jayuCateRepository.findById(jayuBoardDTO.getJayuCateNo()).get();
 
-        log.info("getJayuCateNo"+ jayuBoardDTO.getJayuCateNo());
-        log.info("dto"+jayuBoardDTO);
         JayuBoard jayuBoard = dtoToEntity(jayuBoardDTO);
         jayuBoard.setMember(member);
         jayuBoard.setJayuCategory(cateName);
         jayuBoardRepository.save(jayuBoard);
+
         return jayuBoard.getJayuNo();
     }
 
     @Override
     public JayuBoardDTO read(Long jayuNo) {
-        log.info("jayuNo>>>>>"+jayuNo);
-        Optional<JayuBoard> result = jayuBoardRepository.findById(jayuNo);
+        List<Object[]> result = jayuBoardRepository.getBoard(jayuNo);
+        JayuBoard jayuBoard = (JayuBoard) result.get(0)[0];
+        Long likesCnt = (Long) result.get(0)[1];
+        Long replyCnt = (Long) result.get(0)[2];
 
-        return result.isPresent()?entityToDTO(result.get()):null;
+        return entityToDTO(jayuBoard, likesCnt, replyCnt);
+    }
+
+    @Transactional
+    @Override
+    public void modify(JayuBoardDTO jayuBoardDTO){
+        JayuCategory jayuCategory = jayuCateRepository.findById(jayuBoardDTO.getJayuCateNo()).get();
+        Optional<JayuBoard> result = jayuBoardRepository.findById(jayuBoardDTO.getJayuNo());
+        if (result.isPresent()) {
+            JayuBoard jayuboard = result.get();
+            jayuboard.setTitle(jayuBoardDTO.getTitle());
+            jayuboard.setContent(jayuBoardDTO.getContent());
+            jayuboard.setJayuCategory(jayuCategory);
+            jayuBoardRepository.save(jayuboard);
+        }
+    }
+
+
+    @Transactional
+    @Override
+    public void remove(JayuBoardDTO jayuBoardDTO, Long mno) {
+        Optional<JayuBoard> result = jayuBoardRepository.findById(jayuBoardDTO.getJayuNo());
+
+        if (result.isPresent()) {
+            JayuBoard jayuBoard = result.get();
+            jayuBoard.setJayuCategory(null);
+        }
+
+        jayuLikesService.deleteLikes(jayuBoardDTO.getJayuNo(),mno);
+        jayuReplyService.remove(jayuBoardDTO.getJayuNo());
+
+        jayuBoardRepository.deleteById(jayuBoardDTO.getJayuNo());
     }
 
     //게시물 목록
     @Override
-    public PageResultDTO<JayuBoardDTO,JayuBoard> getList(PageRequestDTO pageRequestDTO){
+    public PageResultDTO<JayuBoardDTO, Object[]> getList(PageRequestDTO pageRequestDTO){
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("regDate").descending());
         //검색조건 처리
         BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
-        Page<JayuBoard> result = jayuBoardRepository.findAll(booleanBuilder, pageable);
+        Page<Object[]> result = jayuBoardRepository.getList(booleanBuilder, pageable);
 
-        Function<JayuBoard, JayuBoardDTO> fn = (entity -> entityToDTO(entity));
+        Function<Object[], JayuBoardDTO> fn = (arr -> entityToDTO(
+                (JayuBoard) arr[0],
+                (Long) arr[1],
+                (Long) arr[2]
+        ));
         return new PageResultDTO<>(result, fn);
     }
 
@@ -86,15 +124,18 @@ public class JayuBoardServiceImpl implements JayuBoardService{
         return booleanBuilder;
     }
 
-
     //카테고리 별 게시물 목록
     @Override
-    public PageResultDTO<JayuBoardDTO, JayuBoard> getListByCate(int jayuCateNo, PageRequestDTO pageRequestDTO){
+    public PageResultDTO<JayuBoardDTO, Object[]> getListByCate(int jayuCateNo, PageRequestDTO pageRequestDTO){
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("regDate").descending());
         log.info(">>>>>jayuCateNo"+jayuCateNo);
-        Page<JayuBoard> result = jayuBoardRepository.getListByCate(jayuCateNo, pageable);
+        Page<Object[]> result = jayuBoardRepository.getListByCate(jayuCateNo, pageable);
         log.info("getListByCateresult" + result);
-        Function<JayuBoard, JayuBoardDTO> fn = (entity -> entityToDTO(entity));
+        Function<Object[], JayuBoardDTO> fn = (arr -> entityToDTO(
+                (JayuBoard) arr[0],
+                (Long) arr[1],
+                (Long) arr[2]
+        ));
 
         return new PageResultDTO<>(result, fn);
     }

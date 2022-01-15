@@ -11,34 +11,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/reply")
+@RequestMapping("/jayu")
 @Log4j2
 @RequiredArgsConstructor
 public class JayuReplyController {
     private final JayuReplyService jayuReplyService;
 
-//    //댓글 목록
-//    @GetMapping("/list")
-//    public ResponseEntity<List<JayuReplyDTO>> getReplyByJayuNo(Long jayuNo){
-//        List<JayuReplyDTO> jayuReplyDTOList = jayuReplyService.getReplyByJayuNo(jayuNo);
-//
-//        return new ResponseEntity<>(jayuReplyDTOList, HttpStatus.OK);
-//    }
-
-    //댓글 작성
-    @PostMapping("/register")
+    @PostMapping("/reply/register")
     //Json(application/json)형태의 HTTP Body 내용을 Java Object로 변환시켜주는 역할
-    public ResponseEntity<Long> replyRegister(@RequestBody JayuReplyDTO jayuReplyDTO,
+    public ResponseEntity<Long> register(@RequestBody JayuReplyDTO jayuReplyDTO,
                                          @AuthenticationPrincipal PrincipalDetails principal ){
-        log.info("replyDTO: " + jayuReplyDTO);
         jayuReplyDTO.setMno(principal.getMember().getMno());
-        log.info("jayuBoardDTO>>>>>>"+jayuReplyDTO);
         Long jayuRno = jayuReplyService.register(jayuReplyDTO);
 
         return new ResponseEntity<>(jayuRno, HttpStatus.OK);
     }
 
+    @PostMapping("/reply/modify/{jayuRno}")
+    public ResponseEntity<String> modify(@PathVariable("jayuRno") Long jayuRno,
+                                         @RequestBody JayuReplyDTO jayuReplyDTO){
+        jayuReplyService.modify(jayuReplyDTO);
+
+        return new ResponseEntity<>("modify",HttpStatus.OK);
+    }
+
+    @DeleteMapping("/reply/remove/{jayuRno}")
+    public ResponseEntity<String> remove(@PathVariable("jayuRno") Long jayuRno){
+        jayuReplyService.replyRemove(jayuRno);
+
+        return new ResponseEntity<>("remove", HttpStatus.OK);
+    }
 }

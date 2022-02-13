@@ -1,0 +1,66 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link th:href="@{/css/login/login.css}" rel="stylesheet"/>
+  <script th:src="@{/js/login/findPw.js}"></script>
+
+  <title>비밀번호 변경</title>
+
+</head>
+
+<body>
+
+<div th:fragment="content">
+  <meta name="viewport"
+        content="width=device-width, height=device-height, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+
+  <div class="loginBox" style="height:300px !important" >
+
+    <fieldset style="height: 430px;">
+      <header>
+        <h2 style="font-size: 2rem;font-family:yg-jalnan;">비밀번호 변경</h2>
+      </header>
+
+        <div class="input-box">
+          <input type="password" class="pass" id="password" name="password"
+                 placeholder="비밀번호">
+          <label for="password" onkeyup="">비밀번호</label>
+          <i class="eyeIcon fa fa-eye fa-lgg"></i>
+        </div>
+        <span class="resultBox pwdCheckResult"></span>
+
+      <br>
+
+      <div class="input-box">
+        <input type="password"  class="pass" id="rePassword" name="password"
+               placeholder="재확인">
+        <label for="rePassword" onkeyup="">재확인</label>
+        <i class="eyeIcon fa fa-eye fa-lgg"></i>
+      </div>
+      <span class="resultBox rePwdCheckResult"></span>
+
+      <br>
+
+
+      <button id="changePw" class="btn" type="button" style="background: rgb(249, 179, 0);">변경 완료</button>
+
+    </fieldset>
+
+  </div>
+
+
+</div>
+
+</body>
+</html>

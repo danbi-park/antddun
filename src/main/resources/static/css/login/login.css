@@ -241,3 +241,15 @@ button{
     color:white !important;
     font-size: 15px;
 }
+
+label {
+    float: left;
+    font-family: 'ELAND_Choice_M';
+}
+
+.resultBox {
+    float:right;
+    font-size: 10px;
+    color: red;
+    margin-right: 77px;
+}

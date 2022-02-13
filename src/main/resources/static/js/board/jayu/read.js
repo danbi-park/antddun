@@ -84,4 +84,15 @@ $(document).ready(function() {
         }) // ajax end.
     });
 
+   //검색
+   var qnaSearchForm = $("#jayuSearchForm");
+   $('.searchButton').click(function(e){
+        jayuSearchForm.submit();
+   });
+
+   //검색어 비우기
+   $('.btn_truncate').click(function(){
+    $('#search-bar').val('');
+   });
+
 }); // end.

@@ -2,6 +2,7 @@ package com.ds.antddun.service;
 
 import com.ds.antddun.entity.UploadImage;
 import com.ds.antddun.repository.UploadImageRepository;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -48,12 +49,20 @@ public class ImageService {
 		//saveFileName 생성
 		UUID uuid = UUID.randomUUID();
 		String saveFileName = uuid.toString() + file.getOriginalFilename();
+		//이미지 경로 저장
 		File saveFile = new File(rootLocation, saveFileName);
 		FileCopyUtils.copy(file.getBytes(), saveFile);
+		//saveThumbnailName 생성
+		String saveThumbnailName = "s_" + uuid.toString() + file.getOriginalFilename();
+		//썸네일 경로 저장
+		File saveThumbnail = new File(rootLocation, saveThumbnailName);
+		FileCopyUtils.copy(file.getBytes(), saveThumbnail);
+		Thumbnailator.createThumbnail(saveThumbnail, saveThumbnail, 230, 230);
 
 		return saveFileName;
 	}
 
+	//이미지 DB 저장
 	public UploadImage store(MultipartFile file) throws Exception {
 		//		 fileName : 예제1.jpg
 		//		 filePath : c:/upload/21/11/17/uuid-예제1.jpg
@@ -64,11 +73,11 @@ public class ImageService {
 			if(file.isEmpty()) {
 				throw new Exception("Failed to store empty file " + file.getOriginalFilename());
 			}
-			//이미지 서버 저장
+			UploadImage saveFile = new UploadImage();
+
 			String folderPath = makeFolder();
 			String saveFileName = fileSave(rootLocation.toString()+'/' + folderPath +'/', file);
-			//이미지 DB 저장
-			UploadImage saveFile = new UploadImage();
+
 			saveFile.setFileName(file.getOriginalFilename());
 			saveFile.setSaveFileName(saveFileName);
 			saveFile.setContentType(file.getContentType());

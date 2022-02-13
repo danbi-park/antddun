@@ -6,6 +6,7 @@ import com.ds.antddun.dto.PageResultDTO;
 import com.ds.antddun.entity.JayuBoard;
 import com.ds.antddun.entity.JayuCategory;
 import com.ds.antddun.entity.Member;
+
 public interface JayuBoardService {
 
     Long register(JayuBoardDTO jayuBoardDTO, Member member);
@@ -19,8 +20,8 @@ public interface JayuBoardService {
     //목록 조회
     PageResultDTO<JayuBoardDTO,Object[]> getList(PageRequestDTO pageRequestDTO);
 
-    //카테고리 목록 조회
-    PageResultDTO<JayuBoardDTO, Object[]> getListByCate(int jayuCateNo,PageRequestDTO pageRequestDTO);
+    //펑예 목록 조회
+    PageResultDTO<JayuBoardDTO,Object[]> getPeongList(PageRequestDTO pageRequestDTO);
 
     default JayuBoardDTO entityToDTO(JayuBoard jayuBoard, Long likesCnt, Long replyCnt) {
         JayuBoardDTO jayuBoardDTO = JayuBoardDTO.builder()
@@ -28,6 +29,7 @@ public interface JayuBoardService {
                 .mno(jayuBoard.getMember().getMno())
                 .jayuCateNo(jayuBoard.getJayuCategory().getJayuCateNo())
                 .jayuCateName(jayuBoard.getJayuCategory().getJayuCateName())
+                .peong(jayuBoard.isPeong())
                 .title(jayuBoard.getTitle())
                 .content(jayuBoard.getContent())
                 .writer(jayuBoard.getMember().getJob().getJob() + " " +jayuBoard.getMember().getExperience()+"년차 " + jayuBoard.getMember().getLastName() +"개미")
@@ -40,12 +42,14 @@ public interface JayuBoardService {
 
         return jayuBoardDTO;
     }
+
     default JayuBoard dtoToEntity(JayuBoardDTO jayuBoardDTO) {
         JayuCategory jayuCategory = JayuCategory.builder().jayuCateNo(jayuBoardDTO.getJayuCateNo()).build();
 
         JayuBoard jayuBoard = JayuBoard.builder()
                 .jayuNo(jayuBoardDTO.getJayuNo())
                 .jayuCategory(jayuCategory)
+                .peong(jayuBoardDTO.isPeong())
                 .title(jayuBoardDTO.getTitle())
                 .content(jayuBoardDTO.getContent())
                 .viewCnt(jayuBoardDTO.getViewCnt())

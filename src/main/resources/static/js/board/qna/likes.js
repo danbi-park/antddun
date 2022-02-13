@@ -25,7 +25,6 @@
 
                         } else { //좋아요, db에 있는 개수 반영
                             likesCnt.text(JSON.stringify(data.likesCnt));
-
                         }
             },
             error : function(data){

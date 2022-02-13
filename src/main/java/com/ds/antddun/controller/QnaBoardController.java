@@ -5,7 +5,6 @@ import com.ds.antddun.dto.PageRequestDTO;
 import com.ds.antddun.dto.PageResultDTO;
 import com.ds.antddun.dto.QnaBoardDTO;
 import com.ds.antddun.entity.JobList;
-import com.ds.antddun.entity.MemberWishList;
 import com.ds.antddun.repository.QnaBoardRepository;
 import com.ds.antddun.service.*;
 import lombok.extern.log4j.Log4j2;

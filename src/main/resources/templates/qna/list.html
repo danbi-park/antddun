@@ -98,20 +98,20 @@
         <nav aria-label="Page navigation example" class="paginationNav">
             <ul class="pagination h-100 justify-content-center align-items-center">
                 <li class="page-item" th:if="${boardList.prev}">
-                    <a class="page-link" style="background-color:red;" th:href="@{/qna/list/(page=${boardList.start - 1},
-                keyword = ${pageRequestDTO.keyword})}" tabindex="-1">이전</a>
+                    <a class="page-link" style="background-color:red;" th:href="@{/qna/list/(cate=${pageRequestDTO.cate}, page=${jayuList.start - 1},
+                type= ${pageRequestDTO.type}, keyword = ${pageRequestDTO.keyword})}" tabindex="-1">이전</a>
                 </li>
 
                 <li th:class=" 'page-item '+ ${boardList.page == page?'active':''} "
                     th:each="page: ${boardList.pageList}">
-                    <a class="page-link" th:href="@{/qna/list/(page = ${page})}">
+                    <a class="page-link" th:href="@{/qna/list/(cate=${pageRequestDTO.cate}, page = ${page}, type= ${pageRequestDTO.type}, keyword = ${pageRequestDTO.keyword})}">
                         [[${page}]]
                     </a>
                 </li>
 
                 <li class="page-item" th:if="${boardList.next}">
-                    <a class="page-link" th:href="@{/qna/list/(page= ${boardList.end + 1},
-                    keyword = ${pageRequestDTO.keyword})}">다음</a>
+                    <a class="page-link" th:href="@{/qna/list/(cate=${pageRequestDTO.cate}, page= ${boardList.end + 1},
+                    type= ${pageRequestDTO.type}, keyword = ${pageRequestDTO.keyword})}">다음</a>
                 </li>
             </ul>
         </nav>

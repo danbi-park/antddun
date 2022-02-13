@@ -25,10 +25,14 @@ public class JayuBoard extends BaseEntity{
     @ColumnDefault("0")
     private int viewCnt;
 
+    @ColumnDefault("false")
+    private boolean peong;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // 영속성 (CasacadeType.ALL 제거 : 영속성을 제거하여 Member 엔티티가 중복으로 저장되는 현상 X)
+    @JoinColumn(name = "jayuCategory_jayuCateNo")
     private JayuCategory jayuCategory;
 
 }

@@ -4,7 +4,6 @@ import com.ds.antddun.config.auth.PrincipalDetails;
 import com.ds.antddun.dto.MemberDTO;
 import com.ds.antddun.dto.MemberWishListDTO;
 import com.ds.antddun.dto.PageRequestDTO;
-import com.ds.antddun.dto.QnaBoardDTO;
 import com.ds.antddun.entity.Ddun;
 import com.ds.antddun.entity.JobList;
 import com.ds.antddun.entity.MemberWishList;
@@ -68,7 +67,8 @@ public class MemberController {
 
         requestDTO.setSize(5);
         model.addAttribute("getQnaFive", qnaService.getListAll(requestDTO));
-        model.addAttribute("getJayuFive", jayuBoardService.getList(requestDTO)); //나중에 index.html 수정하기!
+        model.addAttribute("getPeongFive", jayuBoardService.getPeongList(requestDTO));
+        model.addAttribute("getJayuFive", jayuBoardService.getList(requestDTO));
 //        model.addAttribute("getSosoFive", sosoJobService.getList(requestDTO)); //파라미터가 안맞음
 
         if (principal != null) {

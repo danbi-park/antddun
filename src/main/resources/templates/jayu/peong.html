@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{/layout/basicSearch :: setContent(~{this::content})}">
+<th:block th:replace="~{/layout/basicList :: setContent(~{this::content})}">
     <th:block th:fragment="content">
         <!--페이지 수정 부분 시작-->
 
         <!-- 페이지 css/ js 추가 -->
         <link th:href="@{/css/board/qna/qnaStyles.css}" rel="stylesheet" />
-        <link th:href="@{/css/board/jayu/register.css}" rel="stylesheet" />
+        <script th:src="@{/js/board/jayu/read.js}"></script>
 
         <!-- 본문 시작 -->
+        <!-- 검색 -->
+        <div id="search-wrap" style="margin-bottom: 20px;">
+            <form th:action="@{/jayu/list}" method="get" id="jayuSearchForm">
+                <div style="display: flex; margin-right: 90px;">
+                    <div class="input-group-prepend">
+                        <select class="category" name="cate">
+                            <option value="0">전체</option>
+                            <option th:each="cateList : ${cateList}"
+                                    th:value="${cateList.jayuCateNo}" th:selected="${pageRequestDTO.cate == cateList.jayuCateNo}">
+                                [[${cateList.jayuCateName}]]</option>
+                        </select>
+                        <input type="hidden" name="page" value="1">
+                        <select class="custom-select" name="type">
+                            <option value="t" th:selected="${pageRequestDTO.type == 't'}">제목</option>
+                            <option value="c" th:selected="${pageRequestDTO.type == 'c'}">내용</option>
+                            <option value="tc" th:selected="${pageRequestDTO.type == 'tc'}">제목 + 내용</option>
+                        </select>
+                    </div>
+                    <input id="search-bar" name="keyword" th:value="${pageRequestDTO.keyword}">
+                    <img th:src="@{/assets/close.png}" class="btn_truncate btn_close pointer" />
+                    <button type="button" class="searchButton">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <!-- 글쓰기 버튼 -->
         <a th:href="@{/member/jayu/register}">
             <button class="btn btn-primary" style="float: right; margin-top: -60px; font-family: 'ELAND_Choice_M';">글 쓰기</button>
@@ -17,11 +44,12 @@
         <!-- 카테고리 목록 -->
         <div class="subNav-body">
             <nav class="nav nav-underline" aria-label="Secondary navigation">
-                <a class="subNav" th:href="@{/jayu/list/all}">전체</a><a class="subNav">💣펑예</a>
+                <a class="subNav" th:href="@{/jayu/list}">전체</a>
+                <a class="subNav" th:href="@{/jayu/peong}">💣펑예</a>
                 <a th:each="cateList : ${cateList}" class="subNav"
-                        th:onclick="|javascript:getCateList(${cateList.jayuCateNo},'1')|">
-                [[${cateList.jayuCateName}]]
-            </a>
+                   th:onclick="|javascript:getCateList(${cateList.jayuCateNo},'1')|">
+                    [[${cateList.jayuCateName}]]
+                </a>
             </nav>
         </div>
         <!-- 게시물 -->
@@ -29,20 +57,26 @@
              th:onclick="|javascript:read('${jayuList.jayuNo}','${pageRequestDTO.page}', this.getAttribute('data-keyword'))|">
             <!-- 게시글 정보 -->
             <div class="post-body attach-img-pre">
-                <div class="leftSection">
+                <div class="peonglist">
+                    <!-- 펑예 유무 -->
+                    <span th:if="${jayuList.peong} == true" style="margin-left: 5px;">💣</span>
                     <!-- 카테고리 -->
-                    <span class="cate cate_line">[[${jayuList.jayuCateName}]]</span>
+                    <span class="cate cate_line" style="margin-left: -3px;">[[${jayuList.jayuCateName}]]</span>
+                </div>
+                <div class="leftSection">
                     <!-- 제목 + 글 -->
                     <div class="post-content">
                         <h3><span th:text="${jayuList.title}" class="list_title"></span></h3>
-                            <span class="content-text" style="height: 50px;" th:utext="${jayuList.content}"></span>
+                        <span class="content-text" style="height: 50px;" th:utext="${jayuList.content}"></span>
                     </div>
                 </div>
                 <!-- 썸네일 -->
                 <div class="rightSection">
                     <a href="#post">
-                        <img class="imgTest" style="display:inline-block;
-                    background:lightgray; width:8rem; height:8rem;" src="" alt="">
+                        <img th:src="@{'../upload/1.png'}" width="20px;">
+
+                        <!--                        <img class="imgTest" style="display:inline-block;-->
+                        <!--                    background:lightgray; width:8rem; height:8rem;" src="\upload\2022\01\17\2aeff86f-86a1-494c-8a02-1246ea7ec101Characters.png" alt="Thumbnail">-->
                         <!--           <img th:if="${dto.imageDTOList.size() > 0 && dto.imageDTOList[0].path != null}"
                                         th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|">-->
                     </a>
@@ -57,8 +91,6 @@
 
                     <div class="wrapInfo">
                         <span class="like"><img th:src="@{/assets/heart_0.png}" width="20px;"> [[${jayuList.likesCnt}]]</span>
-<!--                        <span class="like" th:if="${jayuList.member.mno} == ${lieksCheck}"><img th:src="@{/assets/heart_0.png}" width="20px;"> [[${jayuList.likesCnt}]]</span>-->
-<!--                        <span class="like" th:if="${jayuList.member.mno} !== ${lieksCheck}"><img th:src="@{/assets/heart_1.png}" width="20px;"> [[${jayuList.likesCnt}]]</span>-->
                         <span class="views"><img th:src="@{/assets/eye.png}" width="24px;"> [[${jayuList.viewCnt}]]</span>
                         <span class="cmt"><img th:src="@{/assets/messenger.png}" width="19px;"> [[${jayuList.replyCnt}]]</span>
                     </div>
@@ -77,20 +109,20 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination h-100 justify-content-center align-items-center">
                 <li class="page-item" th:if="${jayuList.prev}">
-                    <a class="page-link" th:href="@{/jayu/list/all(page=${jayuList.start - 1},
-                keyword = ${pageRequestDTO.keyword})}" tabindex="-1">이전</a>
+                    <a class="page-link" th:href="@{/jayu/list/(cate=${pageRequestDTO.cate}, page=${jayuList.start - 1},
+                type= ${pageRequestDTO.type}, keyword = ${pageRequestDTO.keyword})}" tabindex="-1">이전</a>
                 </li>
 
                 <li th:class=" 'page-item '+ ${jayuList.page == page?'active':''} "
                     th:each="page: ${jayuList.pageList}">
-                    <a class="page-link" th:href="@{/jayu/list/all(page = ${page}, keyword = ${pageRequestDTO.keyword})}">
+                    <a class="page-link" th:href="@{/jayu/list/(cate=${pageRequestDTO.cate}, page = ${page}, type= ${pageRequestDTO.type}, keyword = ${pageRequestDTO.keyword})}">
                         [[${page}]]
                     </a>
                 </li>
 
                 <li class="page-item" th:if="${jayuList.next}">
-                    <a class="page-link" th:href="@{/jayu/list/all(page= ${jayuList.end + 1},
-                    keyword = ${pageRequestDTO.keyword})}">다음</a>
+                    <a class="page-link" th:href="@{/jayu/list/(cate=${pageRequestDTO.cate}, page= ${jayuList.end + 1},
+                    type= ${pageRequestDTO.type}, keyword = ${pageRequestDTO.keyword})}">다음</a>
                 </li>
             </ul>
         </nav>
@@ -99,14 +131,15 @@
 
         <script th:inline="javascript">
            var contextPath = $('#contextPathHolder').attr('data-contextPath') ? $('#contextPathHolder').attr('data-contextPath') : '';
+
            //카테고리 페이지 이동
            function getCateList(jayuCateNo, page){
                 /*[+
-                var cateurl = contextPath + [[@{/jayu/list}]] +
+                var url = contextPath + [[@{/jayu/list}]] +
                     "?cate=" +jayuCateNo + "&page=" + page;
                 +]*/
 
-                location.href=cateurl;
+                location.href=url;
             }
 
            //게시물 조회

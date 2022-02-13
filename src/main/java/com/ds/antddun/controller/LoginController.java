@@ -9,13 +9,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Random;
 
 @Controller
 @Log4j2
@@ -86,5 +84,33 @@ public class LoginController {
         }
         return username;
     }
+
+    @GetMapping("/findPw")
+    public String findPw(){
+        return "/member/findPw";
+    }
+
+    @ResponseBody
+    @GetMapping("/check/sendSMS")
+    public String sendSMS(@RequestParam("phoneNumber") String phoneNum) {
+
+        Random rand  = new Random();
+        String numStr = "";
+        for(int i=0; i<4; i++) {
+            String ran = Integer.toString(rand.nextInt(10));
+            numStr+=ran;
+        }
+
+        System.out.println("수신자 번호 : " + phoneNum);
+        System.out.println("인증번호 : " + numStr);
+//        memberService.certifiedPhoneNumber(phoneNum,numStr);
+        return numStr;
+    }
+
+    @GetMapping("/changePw")
+    public String changePw(){
+        return "/member/changePw";
+    }
+
 
 }

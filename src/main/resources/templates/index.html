@@ -55,7 +55,7 @@
                     <ul class="navbar-nav mb-lg-0">
                         <li><a class="nav-link nav_li" th:href="@{/sosojob/main}">소소한JOB</a></li>
                         <li><a class="nav-link nav_li" th:href="@{/qna/list}">QnA</a></li>
-                        <li><a class="nav-link nav_li" th:href="@{/jayu/list/all}">자유게시판</a></li>
+                        <li><a class="nav-link nav_li" th:href="@{/jayu/list}">자유게시판</a></li>
                     </ul>
                 </div>
             </div>
@@ -279,7 +279,7 @@
                                     <td class="category"><span class="tag_b">[[${boardList.job}]]</span></td>
                                     <span id="qnaNo" hidden th:text="${boardList.qnaNo}"></span>
                                     <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a>[[${boardList.title}]]</a>
+                                        <span>[[${boardList.title}]]</span>
                                     </td>
                                     <td class="data"><img th:src="@{assets/coins.png}" width="19"> [[${boardList.ddun}]]
                                     </td>
@@ -295,60 +295,24 @@
                     <section class="card margin_bottom2">
                         <div class="card-header">
                             <h3 class="boardlist">내일이면 사라져요!</h3>
-                            <span class="more"><a th:href="@{/jayu/list/all}">더보기</a></span>
+                            <span class="more"><a th:href="@{/jayu/peong}">더보기</a></span>
                         </div>
                         <div class="card-body">
                             <table class="table" style="table-layout: fixed">
                                 <tbody>
-                                <tr>
-                                    <td class="peong" th:name="@{#}">💣</td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">소곤소곤</span></td>
+                                <tr class="pointer hoverGray qnaBoardRow" th:each="boardList : ${getPeongFive.dtoList} "
+                                    th:onclick="|javascript:jayuRead('${boardList.jayuNo}')|">
+                                    <td class="peong" th:if="${boardList.peong}==true">💣</td>
+                                    <td class="category"><span class="tag_b">[[${boardList.jayuCateName}]]</span></td>
+                                    <span id="jayuNo" hidden th:text="${boardList.jayuNo}"></span>
+
                                     <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">이거 무슨뜻인지 도저히 이해안가지 않아?</a>
+                                        <span>[[${boardList.title}]]</span>
                                     </td>
-                                    <td class="data"><img th:src="@{assets/heart_1.png}" width="19"> 42</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 429</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 62</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}">💣</td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">취직·이직</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">취준생 조언 좀 해주시면 감사하겠습니다</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_0.png}" width="19"> 91</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 135</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 3</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}">💣</td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">소근소근</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">오늘 정말 짜증나요ㅠㅠㅠㅠ</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_0.png}" width="19"> 91</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 286</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 42</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}">💣</td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">연애</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">보통 사귀고 얼마만에 첫위기가와?</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_1.png}" width="19"> 45</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 256</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 7</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}">💣</td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">JOB담</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">내가 너무 안일한걸까,, 다른사람들은 어떄?</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_0.png}" width="19"> 35</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 294</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 10</td>
+                                    <td class="data" th:if="${boardList.likesCnt} > 0"><img  th:src="@{assets/heart_1.png}" width="19"> [[${boardList.likesCnt}]]</td>
+                                    <td class="data" th:if="${boardList.likesCnt} == 0"><img th:src="@{assets/heart_0.png}" width="19"> [[${boardList.likesCnt}]]</td>
+                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> [[${boardList.viewCnt}]]</td>
+                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> [[${boardList.replyCnt}]]</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -358,60 +322,25 @@
                     <section class="card margin_bottom2">
                         <div class="card-header">
                             <h3 class="boardlist">자유 게시판</h3>
-                            <span class="more"><a th:href="@{/jayu/list/all}">더보기</a></span>
+                            <span class="more"><a th:href="@{/jayu/list}">더보기</a></span>
                         </div>
                         <div class="card-body">
                             <table class="table" style="table-layout: fixed">
                                 <tbody>
-                                <tr>
-                                    <td class="peong" th:name="@{#}">💣</td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">소곤소곤</span></td>
+                                <tr class="pointer hoverGray qnaBoardRow" th:each="boardList : ${getJayuFive.dtoList} "
+                                    th:onclick="|javascript:jayuRead('${boardList.jayuNo}')|">
+                                    <td class="peong" th:if="${boardList.peong}==true">💣</td>
+                                    <td class="peong" th:if="${boardList.peong}==false"></td>
+                                    <td class="category"><span class="tag_b">[[${boardList.jayuCateName}]]</span></td>
+                                    <span id="jayuNo" hidden th:text="${boardList.jayuNo}"></span>
+
                                     <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">이거 무슨뜻인지 도저히 이해안가지 않아?</a>
+                                        <span>[[${boardList.title}]]</span>
                                     </td>
-                                    <td class="data"><img th:src="@{assets/heart_1.png}" width="19"> 42</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 429</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 62</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}"></td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">연애</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">좋아하는 이성 직장 동료가 오늘 아파서 결근했는데..</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_1.png}" width="19"> 43</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 886</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 45</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}">💣</td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">취직·이직</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">취준생 조언 좀 해주시면 감사하겠습니다</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_0.png}" width="19"> 91</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 135</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 3</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}"></td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">재태크</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">이상한 잡코인으로 대박 노리지 마세요 제발..!😇</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_0.png}" width="19"> 54</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 561</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 54</td>
-                                </tr>
-                                <tr>
-                                    <td class="peong" th:name="@{#}"></td>
-                                    <td class="category"><span class="tag_b" th:name="@{#}">소곤소곤</span></td>
-                                    <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                                        <a th:name="@{#}" th:src="@{#}">요즘 시대에 상사가 이렇게 꼰대일수가 있음??</a>
-                                    </td>
-                                    <td class="data"><img th:src="@{assets/heart_1.png}" width="19"> 42</td>
-                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> 629</td>
-                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> 72</td>
+                                    <td class="data" th:if="${boardList.likesCnt} > 0"><img  th:src="@{assets/heart_1.png}" width="19"> [[${boardList.likesCnt}]]</td>
+                                    <td class="data" th:if="${boardList.likesCnt} == 0"><img th:src="@{assets/heart_0.png}" width="19"> [[${boardList.likesCnt}]]</td>
+                                    <td class="data"><img th:src="@{assets/eye.png}" width="20"> [[${boardList.viewCnt}]]</td>
+                                    <td class="data"><img th:src="@{assets/messenger.png}" width="18"> [[${boardList.replyCnt}]]</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -488,6 +417,15 @@ var contextPath = $('#contextPathHolder').attr('data-contextPath') ? $('#context
         +]*/
 
         location.href=readurl;
+    }
+
+   function jayuRead(jayuNo){
+        /*[+
+        var url = contextPath + [[@{/member/jayu/read}]] +
+            "?jayuNo=" +jayuNo ;
+        +]*/
+
+        location.href=url;
     }
 </script>
 </html>
